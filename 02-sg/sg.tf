@@ -1,6 +1,6 @@
 module "db" {
-    source = "../../terraform-sg-bykithu" 
-   #source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
+    #source = "../../terraform-sg-bykithu" 
+    source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
     #vpc_id = "/${var.project_name}/${var.environment}/vpc-id"
     project_name = var.project_name
     environment = var.environment
@@ -51,8 +51,8 @@ module "db" {
 
 
 module "backend" {
-    source = "../../terraform-sg-bykithu" 
-    #source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
+    #source = "../../terraform-sg-bykithu" 
+    source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
     #vpc_id = "/${var.project_name}/${var.environment}/vpc-id"
     project_name = var.project_name
     environment = var.environment
@@ -63,8 +63,8 @@ module "backend" {
 }
 
 module "frontend" {
-    source = "../../terraform-sg-bykithu" 
-    #source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
+    #source = "../../terraform-sg-bykithu" 
+    source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
     #vpc_id = "/${var.project_name}/${var.environment}/vpc-id"
     project_name = var.project_name
     environment = var.environment
