@@ -20,9 +20,4 @@ variable "common_tags" {
   
 }
 
-variable "sg_description" {
-    type = string
-    default = "We are allowing inbound and outbound very specifically few ports only"
-
-}
 
