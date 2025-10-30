@@ -9,6 +9,17 @@ variable "common_tags" {
   
 }
 
+variable "project_name" {
+    type = string
+    default = "morrisons"
+  
+}
+
+variable "environment" {
+    type = string
+    default = "dev"
+}
+
 variable "public_subnets_cidrs" {
     type = list(string)
     default = ["10.0.1.0/24","10.0.2.0/24"]
