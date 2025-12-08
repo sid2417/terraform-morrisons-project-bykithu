@@ -18,6 +18,11 @@ pipeline {
             steps {
                 sh 'echo Hi, this is todays init, from AGENT-1'
 
+                sh"""
+                ls -ltr
+                
+
+                """
                
                
                                                 
