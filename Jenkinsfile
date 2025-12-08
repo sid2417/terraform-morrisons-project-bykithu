@@ -20,7 +20,8 @@ pipeline {
 
                 sh"""
                 ls -ltr
-                
+                cd 1-vpc
+                ls -lrt
 
                 """
                
