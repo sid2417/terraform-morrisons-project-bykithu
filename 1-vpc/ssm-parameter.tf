@@ -33,3 +33,13 @@ resource "aws_ssm_parameter" "database_subnet_ids" {
   value = join(",", module.morrisons_vpc.database_subnet_ids ) # converting list to string list  
   overwrite = true 
 }
+
+
+resource "aws_ssm_parameter" "database_subnet_group_name" {
+  #name  = "/morrisons/dev/vpc-id"
+  name = "/${var.project_name}/${var.environment}/database_subnet_group_name"
+  description = "Stores database_subnet_group_name for use in other modules"
+  type  = "String"
+  value = module.morrisons_vpc.database_subnet_group_name  ## here we are refferring from outputs.tf file terraform-vpc-bykithu
+  overwrite = true # By default, Terraform doesn’t overwrite existing SSM parameters (for safety)
+}

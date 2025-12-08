@@ -29,6 +29,11 @@ output "morrisons_database_subnet_ids" {
 }
 
 
+output "morrisons_database_subnet_group_name" {
+    value = module.morrisons_vpc.database_subnet_group_name
+  
+}
+
 ### we are storing key-values in ssm-parameter store
 
 

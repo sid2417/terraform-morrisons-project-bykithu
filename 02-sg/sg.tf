@@ -1,6 +1,6 @@
 module "db" {
-    #source = "../../terraform-sg-bykithu" 
-    source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
+    source = "../../terraform-sg-bykithu" 
+    #source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
     #vpc_id = "/${var.project_name}/${var.environment}/vpc-id"
     project_name = var.project_name
     environment = var.environment
@@ -51,8 +51,8 @@ module "db" {
 
 
 module "backend" {
-    #source = "../../terraform-sg-bykithu" 
-    source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
+    source = "../../terraform-sg-bykithu" 
+   # source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
     #vpc_id = "/${var.project_name}/${var.environment}/vpc-id"
     project_name = var.project_name
     environment = var.environment
@@ -63,8 +63,8 @@ module "backend" {
 }
 
 module "frontend" {
-    #source = "../../terraform-sg-bykithu" 
-    source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
+    source = "../../terraform-sg-bykithu" 
+    #source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
     #vpc_id = "/${var.project_name}/${var.environment}/vpc-id"
     project_name = var.project_name
     environment = var.environment
@@ -75,6 +75,30 @@ module "frontend" {
 }
 
 
+module "bastion" {
+    source = "../../terraform-sg-bykithu" 
+    #source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
+    #vpc_id = "/${var.project_name}/${var.environment}/vpc-id"
+    project_name = var.project_name
+    environment = var.environment
+    vpc_id = data.aws_ssm_parameter.vpc_id.value
+    sg_description = "SG for bastion Instances"
+    common_tags = var.common_tags
+    sg_name = "bastion"
+}
+
+module "ansible" {
+    source = "../../terraform-sg-bykithu" 
+    # source = "git::https://github.com/sid2417/terraform-sg-bykithu.git?ref=main"
+    #vpc_id = "/${var.project_name}/${var.environment}/vpc-id"
+    project_name = var.project_name
+    environment = var.environment
+    vpc_id = data.aws_ssm_parameter.vpc_id.value
+    sg_description = "SG for ansible Instances"
+    common_tags = var.common_tags
+    sg_name = "ansible"
+}
+
 # DB is accepting connections from backend
 resource "aws_security_group_rule" "db_backend" {
   type              = "ingress"
@@ -84,6 +108,18 @@ resource "aws_security_group_rule" "db_backend" {
   source_security_group_id = module.backend.sg_id  # source is where you are getting traffic from
   security_group_id = module.db.sg_id
 }
+
+# DB is accepting connections from bastion
+resource "aws_security_group_rule" "db_bastion" {
+  type              = "ingress"
+  from_port         = 3306  # actually for database aws is not allowing port 22
+  to_port           = 3306  # so here bastion is just is checking purpose we are allowing 3306
+  protocol          = "tcp"
+  source_security_group_id = module.bastion.sg_id  # source is where you are getting traffic from
+  security_group_id = module.db.sg_id
+}
+
+
 
 
 # Backend is accepting connections from frontend
@@ -96,6 +132,26 @@ resource "aws_security_group_rule" "backend_frontend" {
   security_group_id = module.backend.sg_id
 }
 
+# Backend is accepting connections from bastion
+resource "aws_security_group_rule" "backend_bastion" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  source_security_group_id = module.bastion.sg_id  # source is where you are getting traffic from
+  security_group_id = module.backend.sg_id
+}
+
+# Backend is accepting connections from ansible
+resource "aws_security_group_rule" "backend_ansible" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  source_security_group_id = module.ansible.sg_id  # source is where you are getting traffic from
+  security_group_id = module.backend.sg_id
+}
+
 # Frontend is accepting connections from public
 resource "aws_security_group_rule" "frontend_public" {
   type              = "ingress"
@@ -104,4 +160,46 @@ resource "aws_security_group_rule" "frontend_public" {
   protocol          = "tcp"
   cidr_blocks = ["0.0.0.0/0"] # Here frontend getting traffic from public
   security_group_id = module.frontend.sg_id
+}
+
+
+# Frontend is accepting connections from bastion
+resource "aws_security_group_rule" "frontend_bastion" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  source_security_group_id = module.bastion.sg_id
+  security_group_id = module.frontend.sg_id
+}
+
+# Frontend is accepting connections from ansible
+resource "aws_security_group_rule" "frontend_ansible" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  source_security_group_id = module.ansible.sg_id
+  security_group_id = module.frontend.sg_id
+}
+
+
+# Ansible is accepting connections from public
+resource "aws_security_group_rule" "ansible_public" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks = ["0.0.0.0/0"] # here generally we mention our home ip address
+  security_group_id = module.ansible.sg_id
+}
+
+# Bastion is accepting connections from public
+resource "aws_security_group_rule" "bastion_public" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks = ["0.0.0.0/0"] # here generally we mention our home ip address
+  security_group_id = module.bastion.sg_id
 }
