@@ -50,6 +50,10 @@ pipeline {
         stage('Apply') {
             steps {
                 sh 'echo Hi, this is todays apply, from AGENT-1'
+                sh"""
+                cd 1-vpc
+                terraform apply -auto-approve 
+                """
             }
         }
         
