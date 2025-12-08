@@ -27,9 +27,21 @@ pipeline {
                 """                                                
             }
         }
+        stage('Validate') {
+            steps {
+                sh 'echo Hi, this is todays validate, from AGENT-1'
+                sh"""
+                terraform validate
+                """
+                
+            }
+        }
         stage('Plan') {
             steps {
                 sh 'echo Hi, this is todays plan, from AGENT-1'
+                sh"""
+                terraform plan
+                """
                 
             }
         }
