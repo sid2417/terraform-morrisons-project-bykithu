@@ -31,6 +31,7 @@ pipeline {
             steps {
                 sh 'echo Hi, this is todays validate, from AGENT-1'
                 sh"""
+                cd 1-vpc
                 terraform validate
                 """
                 
@@ -40,6 +41,7 @@ pipeline {
             steps {
                 sh 'echo Hi, this is todays plan, from AGENT-1'
                 sh"""
+                cd 1-vpc
                 terraform plan
                 """
                 
