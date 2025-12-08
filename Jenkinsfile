@@ -22,7 +22,7 @@ pipeline {
                 ls -ltr
                 cd 1-vpc
                 ls -lrt
-                terrafom init
+                terraform init
 
                 """                                                
             }
