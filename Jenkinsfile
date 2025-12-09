@@ -84,4 +84,3 @@ pipeline {
             echo 'The stage is success'
         }
     }
-}
