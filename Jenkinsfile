@@ -47,23 +47,23 @@ pipeline {
                 
             }
         }
-        stage('Apply') {
-            steps {
-                sh 'echo Hi, this is todays apply, from AGENT-1'
-                sh"""
-                cd 1-vpc
-                terraform apply -auto-approve 
-                """
-            }
-        }
-        stage('Destroy') {
-            steps {
-                sh 'echo Hi, this is todays destroy, from AGENT-1'
-                sh"""
-                cd 1-vpc
-                terraform destroy -auto-approve 
-                """
-            }
+        // stage('Apply') {
+        //     steps {
+        //         sh 'echo Hi, this is todays apply, from AGENT-1'
+        //         sh"""
+        //         cd 1-vpc
+        //         terraform apply -auto-approve 
+        //         """
+        //     }
+        // }
+        // stage('Destroy') {
+        //     steps {
+        //         sh 'echo Hi, this is todays destroy, from AGENT-1'
+        //         sh"""
+        //         cd 1-vpc
+        //         terraform destroy -auto-approve 
+        //         """
+        //     }
         }
 
     
