@@ -2,10 +2,10 @@ pipeline {
     agent {
         label 'AGENT-1'
     }
-    // parameters {
+    parameters {
         
-    //     choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
-    // }
+        choice(name: 'CHOICE1', choices: ['Validate', 'Plan'], description: 'Select One Option Accordingly')
+    }
 
     options {
         // Timeout counter starts AFTER agent is allocated
@@ -15,6 +15,12 @@ pipeline {
     }
     stages {
         stage('Init') {
+            // when{
+            //     expression{
+            //         params.CHOICE1 == 'Plan'
+            //     }
+               
+            // }
             steps {
                 sh 'echo Hi, this is todays init, from AGENT-1'
 
