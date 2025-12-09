@@ -42,9 +42,9 @@ pipeline {
             input {
                 message "Should we continue?"
                 ok "Yes, we should."
-                submitter "alice,bob"
+                submitter "Kithu" // only jenkins users // parameter name : it is parameter variable and it will hold the value, you will use that value (params.name), example ( params.sid )
                 parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                    string(name: 'sid', defaultValue: 'Mr Sid', description: 'Hi, How r u kithu..')
                 }
             }
             steps {
