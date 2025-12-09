@@ -64,7 +64,7 @@ pipeline {
         //         terraform destroy -auto-approve 
         //         """
         //     }
-        }
+        // }
 
     
         
@@ -84,3 +84,4 @@ pipeline {
             echo 'The stage is success'
         }
     }
+}
