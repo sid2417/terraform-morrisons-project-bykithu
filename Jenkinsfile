@@ -38,6 +38,15 @@ pipeline {
             }
         }
         stage('Plan') {
+            {
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                submitter "alice,bob"
+                parameters {
+                    string(name: 'KITHU', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                }
+            }
             steps {
                 sh 'echo Hi, this is todays plan, from AGENT-1'
                 sh"""
