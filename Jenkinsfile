@@ -15,12 +15,7 @@ pipeline {
     }
     stages {
         stage('Init') {
-            when{
-                expression{
-                    params.CHOICE1 == 'Plan'
-                }
-               
-            }
+            
             steps {
                 sh 'echo Hi, this is todays init, from AGENT-1'
 
@@ -34,6 +29,12 @@ pipeline {
             }
         }
         stage('Validate') {
+            when{
+                expression{
+                    params.CHOICE1 == 'Validate'
+                }
+               
+            }
             steps {
                 sh 'echo Hi, this is todays validate, from AGENT-1'
                 sh"""
@@ -44,6 +45,13 @@ pipeline {
             }
         }
         stage('Plan') {
+
+            when{
+                expression{
+                    params.CHOICE1 == 'Plan'
+                }
+               
+            }
             
             input {
                 message "Should we continue?"
