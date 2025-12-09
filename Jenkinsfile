@@ -15,12 +15,12 @@ pipeline {
     }
     stages {
         stage('Init') {
-            // when{
-            //     expression{
-            //         params.CHOICE1 == 'Plan'
-            //     }
+            when{
+                expression{
+                    params.CHOICE1 == 'Plan'
+                }
                
-            // }
+            }
             steps {
                 sh 'echo Hi, this is todays init, from AGENT-1'
 
